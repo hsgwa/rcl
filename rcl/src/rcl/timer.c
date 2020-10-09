@@ -301,9 +301,17 @@ rcl_timer_is_ready(const rcl_timer_t * timer, bool * is_ready)
   return RCL_RET_OK;
 }
 
+rcl_ret_t rcl_timer_get_time_next_call(const rcl_timer_t *timer,
+                                       int64_t *time_next_call) {
+  RCL_CHECK_ARGUMENT_FOR_NULL(timer, RCL_RET_INVALID_ARGUMENT);
+  RCL_CHECK_ARGUMENT_FOR_NULL(time_next_call, RCL_RET_INVALID_ARGUMENT);
+  *time_next_call = rcutils_atomic_load_int64_t(&timer->impl->next_call_time) ;
+  return RCL_RET_OK;
+}
+
 rcl_ret_t
-rcl_timer_get_time_until_next_call(const rcl_timer_t * timer, int64_t * time_until_next_call)
-{
+    rcl_timer_get_time_until_next_call(const rcl_timer_t *timer,
+                                       int64_t *time_until_next_call) {
   RCL_CHECK_ARGUMENT_FOR_NULL(timer, RCL_RET_INVALID_ARGUMENT);
   RCL_CHECK_ARGUMENT_FOR_NULL(time_until_next_call, RCL_RET_INVALID_ARGUMENT);
   rcl_time_point_value_t now;

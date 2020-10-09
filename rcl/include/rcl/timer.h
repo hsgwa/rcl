@@ -289,6 +289,11 @@ RCL_WARN_UNUSED
 rcl_ret_t
 rcl_timer_is_ready(const rcl_timer_t * timer, bool * is_ready);
 
+RCL_PUBLIC
+RCL_WARN_UNUSED
+rcl_ret_t rcl_timer_get_time_next_call(const rcl_timer_t *timer,
+                                       int64_t *time_next_call);
+
 /// Calculate and retrieve the time until the next call in nanoseconds.
 /**
  * This function calculates the time until the next call by adding the timer's
