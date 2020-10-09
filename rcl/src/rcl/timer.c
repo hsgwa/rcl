@@ -301,6 +301,10 @@ rcl_timer_is_ready(const rcl_timer_t * timer, bool * is_ready)
   return RCL_RET_OK;
 }
 
+rcl_ret_t rcl_timer_get_now(const rcl_timer_t *timer, int64_t *now) {
+  return rcl_clock_get_now(timer->impl->clock, now);
+}
+
 rcl_ret_t rcl_timer_get_time_next_call(const rcl_timer_t *timer,
                                        int64_t *time_next_call) {
   RCL_CHECK_ARGUMENT_FOR_NULL(timer, RCL_RET_INVALID_ARGUMENT);
