@@ -30,6 +30,7 @@ extern "C"
 #include "rcutils/macros.h"
 #include "rmw/error_handling.h"
 #include "rmw/validate_full_topic_name.h"
+#include "rmw/rmw.h"
 #include "tracetools/tracetools.h"
 
 #include "./common.h"
@@ -195,13 +196,21 @@ rcl_publisher_init(
   RCUTILS_LOG_DEBUG_NAMED(ROS_PACKAGE_NAME, "Publisher initialized");
   // context
   publisher->impl->context = node->context;
+  rmw_gid_t gid;
+  if (rmw_get_gid_for_publisher(publisher->impl->rmw_handle, &gid) !=
+      RMW_RET_OK) {
+    ret = RCL_RET_ERROR;
+    goto fail;
+  }
+
   TRACEPOINT(
     rcl_publisher_init,
     (const void *)publisher,
     (const void *)node,
     (const void *)publisher->impl->rmw_handle,
     remapped_topic_name,
-    options->qos.depth);
+    options->qos.depth,
+    gid.data);
   goto cleanup;
 fail:
   if (publisher->impl) {
